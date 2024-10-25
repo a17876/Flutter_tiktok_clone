@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tiktok_clone/features/authentication/sign_up_screen.dart';
-
 import 'constants/sizes.dart';
+import 'features/authentication/password_screen.dart';
 
 void main() {
   runApp(const TikTokApp());
@@ -27,7 +26,7 @@ class TikTokApp extends StatelessWidget {
                 fontSize: Sizes.size16 + Sizes.size2,
                 fontWeight: FontWeight.w600),
           )),
-      home: const SignUpScreen(),
+      home: const PasswordScreen(),
     );
   }
 }
