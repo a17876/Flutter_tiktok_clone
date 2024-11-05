@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'constants/sizes.dart';
-import 'features/authentication/password_screen.dart';
+import 'features/main_navigation/main_navigation_screen.dart';
 
 void main() {
   runApp(const TikTokApp());
@@ -26,7 +26,7 @@ class TikTokApp extends StatelessWidget {
                 fontSize: Sizes.size16 + Sizes.size2,
                 fontWeight: FontWeight.w600),
           )),
-      home: const PasswordScreen(),
+      home: const MainNavigationScreen(),
     );
   }
 }

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tiktok_clone/constants/gaps.dart';
 import 'package:flutter_tiktok_clone/features/authentication/widgets/form_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../../constants/sizes.dart';
+import '../../../constants/sizes.dart';
+import 'birthday_screen.dart';
 
 class PasswordScreen extends StatefulWidget {
   const PasswordScreen({super.key});
@@ -15,6 +16,8 @@ class _PasswordScreenState extends State<PasswordScreen> {
   final TextEditingController _passwordController = TextEditingController();
   String _password = "";
   bool _obscureText = false;
+  bool _passwordLengthValid = false;
+  bool _passwordRegValid = false;
 
   @override
   void initState() {
@@ -22,6 +25,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
     _passwordController.addListener(() {
       setState(() {
         _password = _passwordController.text;
+        _validatePassword();
       });
     });
   }
@@ -34,19 +38,11 @@ class _PasswordScreenState extends State<PasswordScreen> {
   }
 
   // password가 8-20글자, 글자, 숫자, 특수기호 들어갔는지
-  String? _isPasswordValid() {
-    if (_password.isEmpty) {
-      return null;
-    }
+  void _validatePassword() {
     final regExp = RegExp(
         r"^(?=.{8,20}$)(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[.!#$%@&'*+-/=?^_`{|}~]).*");
-    if (_password.length < 8 || _password.length > 20) {
-      return "Password must be between 8 and 20 characters";
-    }
-    if (!regExp.hasMatch(_password)) {
-      return "Password must contain letters, numbers, and special characters";
-    }
-    return null;
+    _passwordLengthValid = _password.length >= 8 && _password.length <= 20;
+    _passwordRegValid = regExp.hasMatch(_password);
   }
 
   // 유저가 다른 곳을 tap하면 keyboard가 사라지게
@@ -56,11 +52,13 @@ class _PasswordScreenState extends State<PasswordScreen> {
 
   // Next를 누르거나 키보드의 done을 눌렀을 때 실행되는 함수
   void _onSubmit() {
-    if (_password.isEmpty || _isPasswordValid() != null) return;
+    if (_password.isEmpty || !_passwordLengthValid || !_passwordRegValid) {
+      return;
+    }
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const PasswordScreen(),
+        builder: (context) => const BirthdayScreen(),
       ),
     );
   }
@@ -109,7 +107,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
                   cursorColor: Theme.of(context).primaryColor,
                   obscureText: !_obscureText,
                   decoration: InputDecoration(
-                    hintText: "Make it strong!",
+                    hintText: "Make your password strong!",
                     suffix: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -134,7 +132,6 @@ class _PasswordScreenState extends State<PasswordScreen> {
                         ),
                       ],
                     ),
-                    errorText: _isPasswordValid(),
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                         color: Colors.grey.shade400,
@@ -156,13 +153,15 @@ class _PasswordScreenState extends State<PasswordScreen> {
                   ),
                 ),
                 Gaps.v10,
-                const Row(
+                Row(
                   children: [
                     Icon(
                       Icons.check_circle_outline,
-                      color: Colors.green,
+                      color: _passwordLengthValid
+                          ? Colors.green
+                          : Colors.grey.shade400,
                     ),
-                    Text(
+                    const Text(
                       " 8 to 20 characters",
                       style: TextStyle(
                         fontSize: Sizes.size12,
@@ -170,13 +169,15 @@ class _PasswordScreenState extends State<PasswordScreen> {
                     ),
                   ],
                 ),
-                const Row(
+                Row(
                   children: [
                     Icon(
                       Icons.check_circle_outline,
-                      color: Colors.green,
+                      color: _passwordRegValid
+                          ? Colors.green
+                          : Colors.grey.shade400,
                     ),
-                    Text(
+                    const Text(
                       " Letters, numbers, and special characters",
                       style: TextStyle(
                         fontSize: Sizes.size12,
@@ -188,8 +189,9 @@ class _PasswordScreenState extends State<PasswordScreen> {
                 GestureDetector(
                     onTap: _onSubmit,
                     child: FormButton(
-                        disabled:
-                            _password.isEmpty || _isPasswordValid() != null))
+                        disabled: _password.isEmpty ||
+                            !_passwordLengthValid ||
+                            !_passwordRegValid))
               ],
             ),
           )),

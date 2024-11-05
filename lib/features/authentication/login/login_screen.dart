@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tiktok_clone/constants/gaps.dart';
 import 'package:flutter_tiktok_clone/constants/sizes.dart';
+
 import 'package:flutter_tiktok_clone/features/authentication/widgets/auth_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import 'login_form_screen.dart';
 
 class LogInScreen extends StatelessWidget {
   const LogInScreen({super.key});
@@ -11,18 +14,26 @@ class LogInScreen extends StatelessWidget {
     Navigator.of(context).pop();
   }
 
+  void _onEmailLoginTap(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const LoginFormScreen(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const SafeArea(
+      body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             horizontal: Sizes.size40,
           ),
           child: Column(
             children: [
               Gaps.v80,
-              Text(
+              const Text(
                 'Log in to TikTok',
                 style: TextStyle(
                   fontSize: Sizes.size24,
@@ -30,8 +41,8 @@ class LogInScreen extends StatelessWidget {
                 ),
               ),
               Gaps.v20,
-              Text(
-                'Manage your account, check notofications, comment on video and more.',
+              const Text(
+                'Manage your account, check notifications, comment on video and more.',
                 style: TextStyle(
                   fontSize: Sizes.size16,
                   color: Colors.black54,
@@ -39,12 +50,15 @@ class LogInScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               Gaps.v40,
-              AuthBotton(
-                icon: FaIcon(FontAwesomeIcons.user),
-                text: 'Use phone or email',
+              GestureDetector(
+                onTap: () => _onEmailLoginTap(context),
+                child: const AuthBotton(
+                  icon: FaIcon(FontAwesomeIcons.user),
+                  text: 'Use phone or email',
+                ),
               ),
               Gaps.v16,
-              AuthBotton(
+              const AuthBotton(
                 icon: FaIcon(FontAwesomeIcons.apple),
                 text: 'Continue with Apple',
               )
