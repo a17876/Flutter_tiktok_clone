@@ -12,6 +12,7 @@ class NavTab extends StatelessWidget {
     required this.icon,
     required this.onTap,
     required this.selectedIcon,
+    required this.selectedIndex,
   }) : super(key: key);
 
   final String text;
@@ -19,6 +20,7 @@ class NavTab extends StatelessWidget {
   final IconData icon;
   final IconData selectedIcon;
   final Function onTap;
+  final int selectedIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +29,10 @@ class NavTab extends StatelessWidget {
       child: GestureDetector(
         onTap: () => onTap(),
         child: Container(
-          color: Colors.black.withOpacity(
-              0), // color를 없애면 expanded가 적용이 안됨. 버튼의 빨간색이 잘려서 withOpacity(0) 적용함
+          color: selectedIndex == 0
+              ? Colors.black.withOpacity(0)
+              : Colors.white.withOpacity(
+                  0), // color를 없애면 expanded가 적용이 안됨. 버튼의 빨간색이 잘려서 withOpacity(0) 적용함
           child: AnimatedOpacity(
             opacity: isSelected ? 1 : 0.6,
             duration: const Duration(
@@ -40,13 +44,13 @@ class NavTab extends StatelessWidget {
               children: [
                 FaIcon(
                   isSelected ? selectedIcon : icon,
-                  color: Colors.white,
+                  color: selectedIndex == 0 ? Colors.white : Colors.black,
                 ),
                 Gaps.v5,
                 Text(
                   text,
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: selectedIndex == 0 ? Colors.white : Colors.black,
                   ),
                 ),
               ],
