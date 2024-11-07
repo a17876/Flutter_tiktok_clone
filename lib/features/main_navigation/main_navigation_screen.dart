@@ -39,6 +39,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: _selectedIndex == 0 ? Colors.black : Colors.white,
       body:
           // screens.elementAt(_selectedIndex), // 현재 선택된 화면만 보여줌 이전의 상태는 지우고 초기화시킴 하나씩만 렌더링하기 때문에
           Stack(
